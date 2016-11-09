@@ -1,21 +1,16 @@
 package com.vincent.filepicker.filter.callback;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.vincent.filepicker.filter.FileFilter;
 import com.vincent.filepicker.filter.entity.AudioFile;
 import com.vincent.filepicker.filter.entity.Directory;
 import com.vincent.filepicker.filter.entity.ImageFile;
@@ -91,7 +86,6 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                 mLoader = new FileLoader(context.get());
                 break;
         }
-
         return mLoader;
     }
 
@@ -113,6 +107,7 @@ public class FileLoaderCallbacks implements LoaderManager.LoaderCallbacks<Cursor
                 break;
         }
     }
+
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {

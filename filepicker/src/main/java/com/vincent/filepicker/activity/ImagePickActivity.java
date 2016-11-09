@@ -41,8 +41,11 @@ public class ImagePickActivity extends BaseActivity {
     private int mCurrentNumber = 0;
     private Toolbar mTbImagePick;
     private RecyclerView mRecyclerView;
+
     private ImagePickAdapter mAdapter;
+
     private boolean isNeedCamera;
+
     private ArrayList<ImageFile> mSelectedList = new ArrayList<>();
 
 
@@ -77,7 +80,9 @@ public class ImagePickActivity extends BaseActivity {
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
         mAdapter = new ImagePickAdapter(this, isNeedCamera, mMaxNumber);
         mRecyclerView.setAdapter(mAdapter);
-
+        /**
+         * 如果点击大图的选择不会调用该监听事件，就不会往集合里边添加该文件，造成bug
+         */
         mAdapter.setOnSelectStateListener(new OnSelectStateListener<ImageFile>() {
             @Override
             public void OnSelectStateChanged(boolean state, ImageFile file) {
@@ -92,6 +97,7 @@ public class ImagePickActivity extends BaseActivity {
             }
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -114,10 +120,18 @@ public class ImagePickActivity extends BaseActivity {
                     mAdapter.setCurrentNumber(mCurrentNumber);
                     mTbImagePick.setTitle(mCurrentNumber + "/" + mMaxNumber);
                     mAdapter.refresh(list);
+
+                    mSelectedList.clear();
+                    for (ImageFile imageFile : list) {
+                        if (imageFile.isSelected()){
+                            mSelectedList.add(imageFile);
+                        }
+                    }
                 }
                 break;
         }
     }
+
 
     private void loadData() {
         FileFilter.getImages(this, new FilterResultCallback<ImageFile>() {
@@ -134,6 +148,7 @@ public class ImagePickActivity extends BaseActivity {
                         list.get(index).setSelected(true);
                     }
                 }
+
                 mAdapter.refresh(list);
             }
         });
